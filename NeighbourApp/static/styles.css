@@ -1,8 +1,31 @@
-body {
+
+/* style for index page */
+body.index {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #b3e5fc, #b39ddb);
+    background: linear-gradient(135deg, #7bdbfc, #b39ddb,  #006593, #b39ddb, #b39ddb);
+    background-size: 300% 300%;
     color: #333;
+}
+header.hero{
+    background: linear-gradient(135deg, #7bdbfc, #b39ddb,  #006593, #b39ddb, #b39ddb);
+    background-size: 300% 300%;
+    animation: color 12s ease-in-out infinite;
+}
+@keyframes color{
+    0%{
+        background-position: 0% 50%;
+    }
+    50%{
+        background-position: 80% 50%;
+        color: white
+    }
+    100%{
+        background-position: 50% 100%;
+    }
+    100%{
+        background-position: 0% 50%;
+    }
 }
 
 header {
@@ -21,9 +44,9 @@ header h1 {
     font-style: italic;
 }
 
-header .signup-button {
+header .signup-button-index {
     margin-top: 5px;
-    padding: 10px 30px;
+    padding: 10px 20px;
     font-size: 1.2rem;
     border: 3px solid white;
     border-radius: 25px;
@@ -33,7 +56,7 @@ header .signup-button {
     transition: all 0.3s;
 }
 
-header .signup-button:hover {
+header .signup-button-index:hover {
     background-color: white;
     color: #006593;
 }
@@ -66,6 +89,114 @@ section.about-us, section.get-started {
     margin-bottom: 10px;
     color: #333;
 }
+
+
+/* style for signup page */
+
+body.signup {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.middle-gradient-section {
+    background: linear-gradient(135deg, #7bdbfc, #c8a9f0); /* The gradient */
+    padding: 50px;
+    width: 60%; /* Controls the width of the gradient area, you can adjust */
+    max-width: 600px; /* Optional: limits maximum width */
+    border-radius: 15px; /* Optional: rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: adds shadow around the section */
+}
+
+
+.container-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.form-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+}
+
+.form-card .icon img {
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+}
+
+.form-card h1 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin: 0.5rem 0 0.2rem;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+input:focus, select:focus {
+    border-color: #7b7dfc;
+    outline: none;
+}
+
+.create {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #7b7dfc;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.create:hover {
+    background-color: #5859c8;
+}
+
+/* Footer links */
+.footer {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.footer a {
+    color: #666;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
 
 footer {
     text-align: center;
