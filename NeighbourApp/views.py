@@ -6,3 +6,9 @@ def index(request):
 
 def signup(request):
     return render(request, 'signup.html')
+
+def local(request):
+    return render(request, 'local.html')
+
+def group(request):
+    return render (request, 'group.html')

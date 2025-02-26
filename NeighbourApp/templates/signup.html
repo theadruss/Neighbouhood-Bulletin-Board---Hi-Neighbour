@@ -23,16 +23,17 @@
                     <label for="fullname">Full Name</label>
                     <input type="text" id="fullname" name="fullname" placeholder="Full Name" required>
                     
-                    <label for="country">Country</label>
+                    <label for="country">State</label>
                     <select id="country" name="country" required>
                         <option value="" disabled selected>Select...</option>
-                        <option value="us">United States</option>
-                        <option value="uk">United Kingdom</option>
-                        <option value="in">India</option>
-                        <option value="other">Other</option>
+                        <option value="us">Maharastra</option>
+                        <option value="uk">Kerala</option>
+                        <option value="in">Tamil Nadu</option>
                     </select>
                     
-                    <button class="create" type="submit">Create account</button>
+                    <a href="{% url 'local' %}">
+                        <button class="create" type="button">Create account</button>
+                    </a>
                 </form>
                 <div class="footer">
                     <a href="#">Contact</a>

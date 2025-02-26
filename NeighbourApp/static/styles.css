@@ -100,16 +100,7 @@ body.signup {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
-}
-
-.middle-gradient-section {
-    background: linear-gradient(135deg, #7bdbfc, #c8a9f0); /* The gradient */
-    padding: 50px;
-    width: 60%; /* Controls the width of the gradient area, you can adjust */
-    max-width: 600px; /* Optional: limits maximum width */
-    border-radius: 15px; /* Optional: rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: adds shadow around the section */
+    background: linear-gradient(135deg, #7bdbfc, #c8a9f0);
 }
 
 
@@ -153,6 +144,8 @@ input, select {
     width: 100%;
     padding: 0.8rem;
     margin-bottom: 1rem;
+    padding-right: 10px;
+    padding-left: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 0.9rem;
