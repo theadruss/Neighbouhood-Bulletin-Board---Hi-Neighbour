@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+import os
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Application definition
 
@@ -70,6 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'MiniProject.wsgi.application'
 
+AUTH_USER_MODEL = 'NeighbourApp.CustomUser'  # Update with your app name
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -99,6 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
 
 
 # Internationalization

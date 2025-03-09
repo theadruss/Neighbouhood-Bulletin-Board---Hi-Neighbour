@@ -84,6 +84,65 @@ section.about-us, section.get-started {
     align-items: center;
 }
 
+.news-strip {
+    background-color: #006593;
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    width: 98%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    color: white;
+    /* Hide overflow to maintain a clean look */
+}
+
+.news-content {
+    display: flex;
+    animation: scrollNews 15s linear infinite;
+}
+
+.news-content p {
+    margin: 0;
+    font-size: 1.1rem;
+    padding-right: 50px;
+    /* Spacing between news items */
+    white-space: nowrap;
+    /* Prevents wrapping of text */
+}
+
+
+/* Animation for scrolling the news strip */
+
+@keyframes scrollNews {
+    0% {
+        transform: translateX(100%);
+        /* Start from the right off-screen */
+    }
+    100% {
+        transform: translateX(-100%);
+        /* Move all the way to the left off-screen */
+    }
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 0%;
+        /* Starts from top-left corner */
+    }
+    50% {
+        background-position: 100% 100%;
+        /* Moves to bottom-right corner */
+        background: linear-gradient(45deg, #b39ddb, #b39ddb);
+        /* Transition color at middle */
+    }
+    100% {
+        background-position: 0% 0%;
+        /* Back to the top-left corner */
+        background: linear-gradient(45deg, #b39ddb, #b39ddb);
+        /* Final color */
+    }
+}
+
 .feature-icon {
     font-size: 2rem;
     margin-bottom: 10px;
@@ -171,6 +230,57 @@ input:focus, select:focus {
 .create:hover {
     background-color: #5859c8;
 }
+
+/* Tab Styles */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    border-bottom: 3px solid #ddd;
+}
+
+.tab {
+    background-color: #f1f1f1;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    flex: 1;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+    transition: background 0.3s ease, color 0.3s ease;
+    font-weight: 500;
+    border: 2px solid #ddd;
+    border-bottom: none;
+}
+
+.tab.active {
+    background-color: #7b7dfc;
+    color: white;
+    font-weight: bold;
+    border-color: #7b7dfc;
+    border-bottom: 3px solid white;
+}
+
+.tab:hover {
+    background-color: #d3d3ff;
+}
+
+/* Forgot password link */
+.forgot-password {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.forgot-password a {
+    text-decoration: none;
+    color: #7b7dfc;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
 
 /* Footer links */
 .footer {

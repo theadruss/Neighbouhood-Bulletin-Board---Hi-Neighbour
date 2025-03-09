@@ -1,0 +1,16 @@
+{% for post in posts %}
+    <div class="item">
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="News Image" class="item-image">
+        {% else %}
+            <img src="{% static 'placeholder.jpg' %}" alt="No Image" class="item-image">
+        {% endif %}
+        <div class="item-content">
+            <h2 class="item-title">{{ post.title }}</h2>
+            <p class="item-meta">By {{ post.user.username }} | {{ post.timestamp|date:"M d, Y H:i" }}</p>
+            <p class="item-description">{{ post.content }}</p>
+        </div>
+    </div>
+{% empty %}
+    <p>No posts available</p>
+{% endfor %}

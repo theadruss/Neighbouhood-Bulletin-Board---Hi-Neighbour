@@ -126,6 +126,12 @@
         border-radius: 5px;
         cursor: pointer;
     }
+
+    #post-description {
+        width: 90%; /* Adjust as needed */
+        height: 150px; /* Adjust height */
+    }
+
     .popup-box .close-btn {
         background: #ccc;
         color: black;
@@ -189,24 +195,35 @@
 <div class="popup-container" id="post-popup">
     <div class="popup-box">
         <h3>Create Post</h3>
-        <input type="text" id="post-title" placeholder="Title" required>
-        <textarea id="post-description" placeholder="Write your post here..."></textarea>
-        <button onclick="submitPost()">Submit</button>
-        <button onclick="closePostPopup()">Close</button>
+        <form id="post-form" action="{% url 'local' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="post_image" accept="image/*">
+            <input type="text" name="post_title" placeholder="Title" required>
+            <textarea name="post_description" placeholder="Write your post here..." rows="6" required></textarea>
+            <button type="submit">Submit</button>
+            <button type="button" onclick="closePostPopup()">Close</button>
+        </form>
     </div>
 </div>
 
     
     <main class="content-container" id="content">
-
+        {% for post in posts %}
         <div class="item">
-            <img src="{% static 'images/news2.jpg' %}" alt="News Image" class="item-image">
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="News Image" class="item-image">
+            {% else %}
+                <img src="{% static 'placeholder.jpg' %}" alt="No Image" class="item-image">
+            {% endif %}
             <div class="item-content">
-                <h2 class="item-title">New Park Opening</h2>
-                <p class="item-meta">By Jane Smith</p>
-                <p class="item-description">A brand-new park with jogging tracks and a kids’ play area is opening soon.</p>
+                <h2 class="item-title">{{ post.title }}</h2>
+                <p class="item-meta">By {{ post.user.username }} | {{ post.timestamp|date:"M d, Y H:i" }}</p>
+                <p class="item-description">{{ post.content }}</p>
             </div>
         </div>
+    {% empty %}
+        <p>No posts available</p>
+    {% endfor %}
     </main>
 
     <!-- Popup Modal for Group Code -->
@@ -222,6 +239,16 @@
 </div>
 
     <script>
+
+        document.getElementById("sort-dropdown").addEventListener("change", function() {
+            let sortValue = this.value;
+            fetch(`/news/?sort=${sortValue}`)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("content").innerHTML = data;
+            });
+        });
+
         function switchTab(tab) {
             // Remove active class from all tabs
             document.getElementById("news-tab").classList.remove("active");
@@ -236,27 +263,27 @@
 
             if (tab === "news") {
                 content.innerHTML = `
-                    <div class="item">
-                        <img src="{% static 'images/news1.jpg' %}" alt="News Image" class="item-image">
-                        <div class="item-content">
-                            <h2 class="item-title">Community Event Coming Soon</h2>
-                            <p class="item-meta">By John Doe</p>
-                            <p class="item-description">Join us for the upcoming neighborhood clean-up drive this weekend.</p>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="{% static 'images/news2.jpg' %}" alt="News Image" class="item-image">
-                        <div class="item-content">
-                            <h2 class="item-title">New Park Opening</h2>
-                            <p class="item-meta">By Jane Smith</p>
-                            <p class="item-description">A brand-new park with jogging tracks and a kids’ play area is opening soon.</p>
-                        </div>
-                    </div>
+                    {% for post in posts %}
+        <div class="item">
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="News Image" class="item-image">
+            {% else %}
+                <img src="{% static 'placeholder.jpg' %}" alt="No Image" class="item-image">
+            {% endif %}
+            <div class="item-content">
+                <h2 class="item-title">{{ post.title }}</h2>
+                <p class="item-meta">By {{ post.user.username }} | {{ post.timestamp|date:"M d, Y H:i" }}</p>
+                <p class="item-description">{{ post.content }}</p>
+            </div>
+        </div>
+    {% empty %}
+        <p>No posts available</p>
+    {% endfor %}
                 `;
             } else if (tab === "market") {
                 content.innerHTML = `
                     <div class="item">
-                        <img src="{% static 'images/market1.jpg' %}" alt="Product Image" class="item-image">
+                        <img src="{% static 'market1.jpg' %}" alt="Product Image" class="item-image">
                         <div class="item-content">
                             <h2 class="item-title">Bicycle for Sale</h2>
                             <p class="market-meta">Seller: Alex Johnson | Contact: 9876543210</p>
@@ -265,7 +292,7 @@
                         </div>
                     </div>
                     <div class="item">
-                        <img src="{% static 'images/market2.jpg' %}" alt="Product Image" class="item-image">
+                        <img src="{% static 'market2.jpeg' %}" alt="Product Image" class="item-image">
                         <div class="item-content">
                             <h2 class="item-title">Used Books Collection</h2>
                             <p class="market-meta">Seller: Priya Sharma | Contact: 8765432109</p>
