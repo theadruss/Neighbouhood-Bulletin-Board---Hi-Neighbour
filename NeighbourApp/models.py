@@ -29,7 +29,8 @@ class CustomUser(AbstractUser):
         ('GJ', 'Gujarat'),
         # Add more states if needed
     ]
-
+    full_name = models.CharField(max_length=255, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     state = models.CharField(max_length=2, choices=STATE_CHOICES, default='KL')
 
     def __str__(self):

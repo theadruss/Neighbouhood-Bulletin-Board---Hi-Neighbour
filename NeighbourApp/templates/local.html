@@ -42,6 +42,61 @@
             height: 2px;
             background: white;
         }
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 10px;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .profile-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.3);
+        }
+        
+        .profile-card img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-card:hover img {
+            transform: rotate(10deg);
+        }
+        
+        .profile-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-text h2 {
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        .profile-text a {
+            font-size: 12px;
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .profile-text a:hover {
+            color: #ffdd57;
+        }
+        
+
+        
         .join-group-btn {
             background-color: #ffffff;
             color: #1e3c72;
@@ -90,6 +145,40 @@
             font-size: 14px;
             color: darkblue;
         }
+        .category-general {
+            background-color: grey;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .category-event {
+            background-color: blue;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .category-important {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .category-alert {
+            background-color: orange;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .category-lost-found {
+            background-color: green;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
 
         /* Popup Modal */
     .popup-container {
@@ -103,6 +192,18 @@
         justify-content: center;
         align-items: center;
     }
+    /* Fixed size for the description input box */
+textarea[name="content"] {
+    width: 100%; /* Full width of the popup */
+    height: 100px; /* Fixed height */
+    resize: none; /* Prevent resizing */
+    margin-top: 10px; /* Add spacing above the textarea */
+}
+
+/* Add margin to the category dropdown */
+select[name="category"] {
+    margin-bottom: 10px; /* Add spacing below the dropdown */
+}
     .popup-box {
         background: white;
         padding: 20px;
@@ -127,9 +228,18 @@
         cursor: pointer;
     }
 
-    #post-description {
+    #post-form content {
         width: 90%; /* Adjust as needed */
-        height: 150px; /* Adjust height */
+        height: 200px; /* Adjust height */
+    }
+
+    #post-form select {
+        padding: 10px;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background: #f9f9f9;
+        cursor: pointer;
     }
 
     .popup-box .close-btn {
@@ -173,21 +283,31 @@
 </head>
 <body>
     <header class="navbar-container">
-        <div class="navbar-title">Hi! Neighbour</div>
+        <div class="profile-card">
+            <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'default_profile.jpg' %}{% endif %}" alt="Profile Picture">
+            <div class="profile-text">
+                <h2>{{ user.full_name }}</h2>
+                <h4>{{ user.username }}</h1>
+            </div>
+        </div>
         <nav class="navbar-links">
             <a href="#" class="active" id="news-tab" onclick="switchTab('news')">News</a>
             <a href="#" id="market-tab" onclick="switchTab('market')">Market</a>
         </nav>
         <button class="join-group-btn" onclick="openPopup()">Join Group</button>
     </header>
+    
 
     <!-- Post Actions Container (Directly Below Navbar) -->
 <div class="post-actions">
     <button class="create-post-btn" onclick="openPostPopup()">Create Post</button>
     <select id="sort-dropdown">
-        <option value="latest">Sort by Latest</option>
-        <option value="oldest">Sort by Oldest</option>
-        <option value="popular">Sort by Popular</option>
+        <option value="">All Categories</option>
+            <option value="General">General</option>
+            <option value="Event">Event</option>
+            <option value="Alert">Alert</option>
+            <option value="Lost & Found">Lost & Found</option>
+            <option value="Important">Important</option>
     </select>
 </div>
 
@@ -197,9 +317,17 @@
         <h3>Create Post</h3>
         <form id="post-form" action="{% url 'local' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="post_image" accept="image/*">
-            <input type="text" name="post_title" placeholder="Title" required>
-            <textarea name="post_description" placeholder="Write your post here..." rows="6" required></textarea>
+            <input type="file" name="image" accept="image/*">
+            <input type="text" name="title" placeholder="Title" required>
+            <select name="category" required>
+                <option value="General">General</option>
+                <option value="News">News</option>
+                <option value="Events">Events</option>
+                <option value="Lost & Found">Lost & Found</option>
+                <option value="Community Help">Community Help</option>
+                <option value="Market">Market</option>
+            </select>
+            <textarea name="content" placeholder="Write your post here..." rows="6" required></textarea>
             <button type="submit">Submit</button>
             <button type="button" onclick="closePostPopup()">Close</button>
         </form>
@@ -217,7 +345,19 @@
             {% endif %}
             <div class="item-content">
                 <h2 class="item-title">{{ post.title }}</h2>
-                <p class="item-meta">By {{ post.user.username }} | {{ post.timestamp|date:"M d, Y H:i" }}</p>
+                <p class="item-meta">By {{ post.user.username }} | {{ post.timestamp|date:"M d, Y H:i" }} | {% if post.category == "Important" %}
+                    <span class="category-important">{{ post.category }}</span>
+                {% elif post.category == "Event" %}
+                    <span class="category-event">{{ post.category }}</span>
+                {% elif post.category == "General" %}
+                    <span class="category-general">{{ post.category }}</span>
+                {% elif post.category == "Alert" %}
+                    <span class="category-alert">{{ post.category }}</span>
+                {% elif post.category == "Lost & Found" %}
+                    <span class="category-lost-found">{{ post.category }}</span>
+                {% else %}
+                    <span>{{ post.category }}</span>  <!-- Fallback for any unexpected category -->
+                {% endif %}</p>
                 <p class="item-description">{{ post.content }}</p>
             </div>
         </div>
@@ -242,7 +382,7 @@
 
         document.getElementById("sort-dropdown").addEventListener("change", function() {
             let sortValue = this.value;
-            fetch(`/news/?sort=${sortValue}`)
+            fetch(`/local/?sort=${sortValue}`)
             .then(response => response.text())
             .then(data => {
                 document.getElementById("content").innerHTML = data;
@@ -272,7 +412,19 @@
             {% endif %}
             <div class="item-content">
                 <h2 class="item-title">{{ post.title }}</h2>
-                <p class="item-meta">By {{ post.user.username }} | {{ post.timestamp|date:"M d, Y H:i" }}</p>
+                <p class="item-meta">By {{ post.user.username }} | {{ post.timestamp|date:"M d, Y H:i" }} | {% if post.category == "Important" %}
+                    <span class="category-important">{{ post.category }}</span>
+                {% elif post.category == "Event" %}
+                    <span class="category-event">{{ post.category }}</span>
+                {% elif post.category == "General" %}
+                    <span class="category-general">{{ post.category }}</span>
+                {% elif post.category == "Alert" %}
+                    <span class="category-alert">{{ post.category }}</span>
+                {% elif post.category == "Lost & Found" %}
+                    <span class="category-lost-found">{{ post.category }}</span>
+                {% else %}
+                    <span>{{ post.category }}</span>  <!-- Fallback for any unexpected category -->
+                {% endif %}</p>
                 <p class="item-description">{{ post.content }}</p>
             </div>
         </div>
